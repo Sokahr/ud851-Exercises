@@ -1,5 +1,6 @@
 package com.example.android.lifecycle;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -47,20 +48,90 @@ public class MainActivity extends AppCompatActivity {
 
         mLifecycleDisplay = (TextView) findViewById(R.id.tv_lifecycle_events_display);
 
-        // TODO (1) Use logAndAppend within onCreate
+        // DONE(1) Use logAndAppend within onCreate
+        logAndAppend(ON_CREATE);
     }
 
-    // TODO (2) Override onStart, call super.onStart, and call logAndAppend with ON_START
+    // DONE (2) Override onStart, call super.onStart, and call logAndAppend with ON_START
 
-    // TODO (3) Override onResume, call super.onResume, and call logAndAppend with ON_RESUME
+    @Override
+    protected void onStart() {
+        super.onStart();
+        logAndAppend(ON_START);
+    }
 
-    // TODO (4) Override onPause, call super.onPause, and call logAndAppend with ON_PAUSE
+    // DONE (3) Override onResume, call super.onResume, and call logAndAppend with ON_RESUME
 
-    // TODO (5) Override onStop, call super.onStop, and call logAndAppend with ON_STOP
+    /**
+     * Dispatch onResume() to fragments.  Note that for better inter-operation
+     * with older versions of the platform, at the point of this call the
+     * fragments attached to the activity are <em>not</em> resumed.  This means
+     * that in some cases the previous state may still be saved, not allowing
+     * fragment transactions that modify the state.  To correctly interact
+     * with fragments in their proper state, you should instead override
+     * {@link #onResumeFragments()}.
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        logAndAppend(ON_RESUME);
+    }
 
-    // TODO (6) Override onRestart, call super.onRestart, and call logAndAppend with ON_RESTART
 
-    // TODO (7) Override onDestroy, call super.onDestroy, and call logAndAppend with ON_DESTROY
+    // DONE (4) Override onPause, call super.onPause, and call logAndAppend with ON_PAUSE
+
+    /**
+     * Dispatch onPause() to fragments.
+     */
+    @Override
+    protected void onPause() {
+        super.onPause();
+        logAndAppend(ON_PAUSE);
+    }
+
+    // DONE (5) Override onStop, call super.onStop, and call logAndAppend with ON_STOP
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        logAndAppend(ON_STOP);
+    }
+
+    // DONE (6) Override onRestart, call super.onRestart, and call logAndAppend with ON_RESTART
+
+    /**
+     * Called after {@link #onStop} when the current activity is being
+     * re-displayed to the user (the user has navigated back to it).  It will
+     * be followed by {@link #onStart} and then {@link #onResume}.
+     * <p>
+     * <p>For activities that are using raw {@link Cursor} objects (instead of
+     * creating them through
+     * {@link #managedQuery(Uri, String[], String, String[], String)},
+     * this is usually the place
+     * where the cursor should be requeried (because you had deactivated it in
+     * {@link #onStop}.
+     * <p>
+     * <p><em>Derived classes must call through to the super class's
+     * implementation of this method.  If they do not, an exception will be
+     * thrown.</em></p>
+     *
+     * @see #onStop
+     * @see #onStart
+     * @see #onResume
+     */
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        logAndAppend(ON_RESTART);
+    }
+
+    // DONE (7) Override onDestroy, call super.onDestroy, and call logAndAppend with ON_DESTROY
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        logAndAppend(ON_DESTROY);
+    }
 
     /**
      * Logs to the console and appends the lifecycle method name to the TextView so that you can
