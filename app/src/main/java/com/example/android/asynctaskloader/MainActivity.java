@@ -27,7 +27,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.example.android.asynctaskloader.utilities.NetworkUtils;
 
 import java.io.IOException;
@@ -165,8 +164,8 @@ public class MainActivity extends AppCompatActivity implements
     public Loader<String> onCreateLoader(int id, final Bundle args) {
         return new AsyncTaskLoader<String>(this) {
 
-            // TODO (1) Create a String member variable called mGithubJson that will store the raw JSON
-
+            // DONE (1) Create a String member variable called mGithubJson that will store the raw JSON
+            private String mGithubJson;
             @Override
             protected void onStartLoading() {
 
@@ -181,8 +180,12 @@ public class MainActivity extends AppCompatActivity implements
                  */
                 mLoadingIndicator.setVisibility(View.VISIBLE);
 
-                // TODO (2) If mGithubJson is not null, deliver that result. Otherwise, force a load
-                forceLoad();
+                // DONE (2) If mGithubJson is not null, deliver that result. Otherwise, force a load
+                if(mGithubJson != null) {
+                    deliverResult(mGithubJson);
+                } else {
+                    forceLoad();
+                }
             }
 
             @Override
@@ -207,8 +210,22 @@ public class MainActivity extends AppCompatActivity implements
                 }
             }
 
-            // TODO (3) Override deliverResult and store the data in mGithubJson
-            // TODO (4) Call super.deliverResult after storing the data
+            // DONE (3) Override deliverResult and store the data in mGithubJson
+
+            /**
+             * Sends the result of the load to the registered listener. Should only be called by subclasses.
+             * <p>
+             * Must be called from the process's main thread.
+             *
+             * @param data the result of the load
+             */
+            @Override
+            public void deliverResult(String data) {
+                mGithubJson = data;
+                // DONE (4) Call super.deliverResult after storing the data
+                super.deliverResult(data);
+            }
+
         };
     }
 
