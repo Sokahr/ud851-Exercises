@@ -19,17 +19,13 @@ package android.example.com.visualizerpreferences;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
-import android.support.v7.preference.CheckBoxPreference;
-import android.support.v7.preference.EditTextPreference;
-import android.support.v7.preference.ListPreference;
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceFragmentCompat;
-import android.support.v7.preference.PreferenceScreen;
+import android.support.v7.preference.*;
 import android.widget.Toast;
 
-// TODO (1) Implement OnPreferenceChangeListener
+
+// DONE (1) Implement OnPreferenceChangeListener
 public class SettingsFragment extends PreferenceFragmentCompat implements
-        OnSharedPreferenceChangeListener {
+        OnSharedPreferenceChangeListener, Preference.OnPreferenceChangeListener {
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
@@ -51,7 +47,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
                 setPreferenceSummary(p, value);
             }
         }
-        // TODO (3) Add the OnPreferenceChangeListener specifically to the EditTextPreference
+        // DONE (3) Add the OnPreferenceChangeListener specifically to the EditTextPreference
+        findPreference(getString(R.string.pref_size_key)).setOnPreferenceChangeListener(this);
     }
 
     @Override
@@ -88,10 +85,41 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
         }
     }
 
-    // TODO (2) Override onPreferenceChange. This method should try to convert the new preference value
+    // Done (2) Override onPreferenceChange. This method should try to convert the new preference value
     // to a float; if it cannot, show a helpful error message and return false. If it can be converted
     // to a float check that that float is between 0 (exclusive) and 3 (inclusive). If it isn't, show
     // an error message and return false. If it is a valid number, return true.
+    /**
+     * Called when a Preference has been changed by the user. This is
+     * called before the state of the Preference is about to be updated and
+     * before the state is persisted.
+     *
+     * @param preference The changed Preference.
+     * @param newValue   The new value of the Preference.
+     * @return True to update the state of the Preference with the new value.
+     */
+    @Override
+    public boolean onPreferenceChange(Preference preference, Object newValue) {
+        Toast error = Toast.makeText(this.getContext(), "The size should be between 0.1 and 3", Toast.LENGTH_SHORT);
+        if(preference.getKey().equals(getString(R.string.pref_size_key))) {
+            String stringSize = ((String) newValue).trim();
+            if(stringSize == "") {
+                stringSize = "1";
+            }
+            try {
+                Float floatSize = Float.parseFloat(stringSize);
+                if(floatSize <= 0 || floatSize >3) {
+                    error.show();
+                    return false;
+                }
+            } catch (NumberFormatException e) {
+                error.show();
+                return false;
+            }
+
+        }
+        return true;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
