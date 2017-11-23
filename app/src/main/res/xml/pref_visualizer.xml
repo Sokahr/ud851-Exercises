@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+>
 
     <CheckBoxPreference
         android:defaultValue="@bool/pref_show_bass_default"
@@ -23,8 +24,12 @@
         android:summaryOn="@string/pref_show_true"
         android:title="@string/pref_show_treble_label" />
 
-    <!-- TODO (1) Add and EditTextPreference with all of the appropriate strings stored in strings.xml.
+    <!-- DONE (1) Add and EditTextPreference with all of the appropriate strings stored in strings.xml.
         It should have a key, default value of 1 and title -->
+    <EditTextPreference
+            android:key="@string/pref_edit_text_key"
+            android:defaultValue="@string/pref_edit_text_default"
+            android:title="@string/pref_edit_text_label"/>
 
     <ListPreference
         android:defaultValue="@string/pref_color_red_value"
