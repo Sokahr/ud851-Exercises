@@ -18,6 +18,7 @@ package com.example.android.todolist;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
@@ -29,8 +30,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
-
 import com.example.android.todolist.data.TaskContract;
+
+import static com.example.android.todolist.data.TaskContract.TaskEntry.CONTENT_URI;
 
 
 public class MainActivity extends AppCompatActivity implements
@@ -78,13 +80,15 @@ public class MainActivity extends AppCompatActivity implements
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 // Here is where you'll implement swipe to delete
 
-                // TODO (1) Construct the URI for the item to delete
+                // DONE (1) Construct the URI for the item to delete
                 //[Hint] Use getTag (from the adapter code) to get the id of the swiped item
-
-                // TODO (2) Delete a single row of data using a ContentResolver
-
-                // TODO (3) Restart the loader to re-query for all tasks after a deletion
-                
+                int id = (int) viewHolder.itemView.getTag();
+                Uri uri = CONTENT_URI;
+                uri = uri.buildUpon().appendPath(Integer.toString(id)).build();
+                // DONE (2) Delete a single row of data using a ContentResolver
+                getContentResolver().delete(uri, null, null);
+                // DONE (3) Restart the loader to re-query for all tasks after a deletion
+                getSupportLoaderManager().restartLoader(TASK_LOADER_ID, null,MainActivity.this);
             }
         }).attachToRecyclerView(mRecyclerView);
 
@@ -161,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements
                 // [Hint] use a try/catch block to catch any errors in loading data
 
                 try {
-                    return getContentResolver().query(TaskContract.TaskEntry.CONTENT_URI,
+                    return getContentResolver().query(CONTENT_URI,
                             null,
                             null,
                             null,
