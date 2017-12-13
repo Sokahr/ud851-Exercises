@@ -28,7 +28,6 @@ import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.Action;
 import android.support.v4.content.ContextCompat;
-
 import com.example.android.background.MainActivity;
 import com.example.android.background.R;
 import com.example.android.background.sync.ReminderTasks;
@@ -66,7 +65,7 @@ public class NotificationUtils {
     public static void remindUserBecauseCharging(Context context) {
         NotificationManager notificationManager = (NotificationManager)
                 context.getSystemService(Context.NOTIFICATION_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= 26) {
             NotificationChannel mChannel = new NotificationChannel(
                     WATER_REMINDER_NOTIFICATION_CHANNEL_ID,
                     context.getString(R.string.main_notification_channel_name),
